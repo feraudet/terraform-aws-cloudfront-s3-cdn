@@ -1,6 +1,6 @@
 'use strict';
 
-const AWS = require('aws-sdk');
+//const AWS = require('aws-sdk');
 const cookie = require('cookie');
 const crypto = require('crypto');
 const https = require('https');
