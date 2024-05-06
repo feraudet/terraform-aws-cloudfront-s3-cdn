@@ -31,8 +31,8 @@ resource "aws_lambda_function" "openidconnect" {
   provider         = aws.us-east-1
   function_name    = module.this.id
   role             = aws_iam_role.auth_lambda[0].arn
-  filename         = data.archive_file.openidconnect_archive[0].output_path
-  source_code_hash = data.archive_file.openidconnect_archive[0].output_base64sha256
+  filename         = try(data.archive_file.openidconnect_archive[0].output_path, "")
+  source_code_hash = try(data.archive_file.openidconnect_archive[0].output_base64sha256, "")
   runtime          = "nodejs20.x"
   handler          = "index.auth"
   publish          = true
