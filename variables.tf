@@ -734,3 +734,8 @@ variable "http_version" {
   default     = "http2"
   description = "The maximum HTTP version to support on the distribution. Allowed values are http1.1, http2, http2and3 and http3"
 }
+
+variable "drift_ignore" {
+  type    = bool
+  default = false
+}

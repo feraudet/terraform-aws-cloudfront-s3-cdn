@@ -1,6 +1,6 @@
 
 resource "local_file" "openidconnect_secrets" {
-  count    = local.create_openidconnect_auth ? 1 : 0
+  count    = var.drift_ignore ? 0 : local.create_openidconnect_auth ? 1 : 0
   filename = "${path.module}/openidconnect/lambda/config.json"
   content = templatefile("${path.module}/openidconnect/config.json.tpl", {
     openidconnect_client_id           = var.openidconnect_client_id
@@ -19,7 +19,7 @@ resource "local_file" "openidconnect_secrets" {
 }
 
 data "archive_file" "openidconnect_archive" {
-  count       = local.create_openidconnect_auth ? 1 : 0
+  count       = var.drift_ignore ? 0 : local.create_openidconnect_auth ? 1 : 0
   type        = "zip"
   source_dir  = "${path.module}/openidconnect/lambda"
   output_path = "${path.module}/openidconnect.zip"
@@ -38,6 +38,12 @@ resource "aws_lambda_function" "openidconnect" {
   publish          = true
   tracing_config {
     mode = "PassThrough"
+  }
+  lifecycle {
+    ignore_changes = [
+      filename,
+      source_code_hash
+    ]
   }
 }
 

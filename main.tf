@@ -391,6 +391,9 @@ resource "aws_cloudfront_distribution" "default" {
   #bridgecrew:skip=BC_AWS_NETWORKING_65:Skipping `Ensure CloudFront distribution has a strict security headers policy attached` because the response header policy is indeed configurable and is managed via `var.response_headers_policy_id`.
   count = local.enabled ? 1 : 0
 
+  lifecycle {
+    ignore_changes = [default_cache_behavior]
+  }
   enabled             = var.distribution_enabled
   is_ipv6_enabled     = var.ipv6_enabled
   comment             = var.comment
